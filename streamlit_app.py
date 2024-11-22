@@ -120,7 +120,7 @@ def main():
     st.title("Generate sankey!")
     display_sidebar_ui()
 
-    st.session_state.sankey_data = [pd.DataFrame()]
+    st.session_state.sankey_data = []
 
     files_uploaded = st.file_uploader(
         "Upload csv", type=["csv"], accept_multiple_files=True
@@ -134,7 +134,7 @@ def main():
             # Initialize empty dataframe to store all news
             st.session_state.sankey_data.append(df)
 
-    if not st.session_state.sankey_data[0].empty:
+    if st.session_state.sankey_data:
         # show button to generate sankey
         if st.button("Generate sankey"):
             generate_sankeys()
