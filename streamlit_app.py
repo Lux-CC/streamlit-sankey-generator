@@ -73,7 +73,7 @@ def generate_sankey():
 
     # Prepare data for the Sankey diagram
     sankey_data = {
-        "node": {"label": [f"{label[:20]}..." for label in node_labels]},
+        "node": {"label": [f"{label[:80]}..." for label in node_labels]},
         "link": {
             "source": [link["source"] for link in links],
             "target": [link["target"] for link in links],
