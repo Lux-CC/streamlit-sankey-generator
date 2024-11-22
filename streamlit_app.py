@@ -45,6 +45,10 @@ def display_sidebar_ui():
 
 
 def generate_sankey():
+    # check if st.session_state.sankey_data is set
+    if 'sankey_data' not in st.session_state:
+        return
+    
     df = st.session_state.sankey_data
 
     # Prepare unique values and mapping
@@ -52,8 +56,6 @@ def generate_sankey():
     all_values = [item for sublist in unique_cols for item in sublist]
 
     node_labels = list(pd.unique(all_values))
-    # limit the node label length to 20 characters
-    node_labels = [label[:20] for label in node_labels]
 
     label_to_index = {label: i for i, label in enumerate(node_labels)}
     
@@ -68,7 +70,8 @@ def generate_sankey():
     # Prepare data for the Sankey diagram
     sankey_data = {
         'node': {
-            'label': node_labels
+            'label': [label[:20] for label in node_labels]
+
         },
         'link': {
             'source': [link['source'] for link in links],
