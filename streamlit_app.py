@@ -75,7 +75,10 @@ def generate_sankeys():
         sankey_data = {
 
             # wrap lines each 40 characters and 80 and 120 etc. (insert \n)
-            "node": {"label": [textwrap.fill(label, width=40).replace('\n', '<br>') for label in node_labels]},
+            "node": {
+                "label": [textwrap.fill(label, width=40).replace('\n', '<br>') for label in node_labels]
+                "x": [0, 0.1].extend([0.2] * (len(node_labels) - 2)), # type: ignore
+            },
             "link": {
                 "source": [link["source"] for link in links],
                 "target": [link["target"] for link in links],
