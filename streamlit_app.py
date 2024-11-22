@@ -45,72 +45,71 @@ def display_sidebar_ui():
         )
 
 
-def generate_sankey():
+def generate_sankeys():
     # check if st.session_state.sankey_data is set
     if "sankey_data" not in st.session_state:
         return
 
-    df = st.session_state.sankey_data
+    for df in st.session_state.sankey_data:
+        # Prepare unique values and mapping
+        unique_cols = [df[col].unique() for col in df.columns]
+        all_values = [item for sublist in unique_cols for item in sublist]
 
-    # Prepare unique values and mapping
-    unique_cols = [df[col].unique() for col in df.columns]
-    all_values = [item for sublist in unique_cols for item in sublist]
+        node_labels = list(pd.unique(all_values))
 
-    node_labels = list(pd.unique(all_values))
+        label_to_index = {label: i for i, label in enumerate(node_labels)}
 
-    label_to_index = {label: i for i, label in enumerate(node_labels)}
+        # Create links
+        links = []
+        for _, row in df.iterrows():
+            for i in range(len(row) - 1):
+                links.append(
+                    {
+                        "source": label_to_index[row[i]],
+                        "target": label_to_index[row[i + 1]],
+                        "value": 1,
+                    }
+                )
 
-    # Create links
-    links = []
-    for _, row in df.iterrows():
-        for i in range(len(row) - 1):
-            links.append(
-                {
-                    "source": label_to_index[row[i]],
-                    "target": label_to_index[row[i + 1]],
-                    "value": 1,
-                }
+        # Prepare data for the Sankey diagram
+        sankey_data = {
+
+            # wrap lines each 40 characters and 80 and 120 etc. (insert \n)
+            "node": {"label": [textwrap.fill(label, width=40).replace('\n', '<br>') for label in node_labels]},
+            "link": {
+                "source": [link["source"] for link in links],
+                "target": [link["target"] for link in links],
+                "value": [link["value"] for link in links],
+            },
+        }
+
+        # Create the Sankey diagram
+        fig = go.Figure(
+            go.Sankey(
+                node=dict(
+                    pad=st.session_state.sankey_pad,
+                    thickness=st.session_state.sankey_thickness,
+                    line=dict(color="black", width=st.session_state.line_width),
+                    label=sankey_data["node"]["label"],
+                    color=st.session_state.node_color,
+                ),
+                link=dict(
+                    source=sankey_data["link"]["source"],
+                    target=sankey_data["link"]["target"],
+                    value=sankey_data["link"]["value"],
+                    # color=st.session_state.link_color,
+                ),
             )
-
-    # Prepare data for the Sankey diagram
-    sankey_data = {
-
-        # wrap lines each 40 characters and 80 and 120 etc. (insert \n)
-        "node": {"label": [textwrap.fill(label, width=40).replace('\n', '<br>') for label in node_labels]},
-        "link": {
-            "source": [link["source"] for link in links],
-            "target": [link["target"] for link in links],
-            "value": [link["value"] for link in links],
-        },
-    }
-
-    # Create the Sankey diagram
-    fig = go.Figure(
-        go.Sankey(
-            node=dict(
-                pad=st.session_state.sankey_pad,
-                thickness=st.session_state.sankey_thickness,
-                line=dict(color="black", width=st.session_state.line_width),
-                label=sankey_data["node"]["label"],
-                color=st.session_state.node_color,
-            ),
-            link=dict(
-                source=sankey_data["link"]["source"],
-                target=sankey_data["link"]["target"],
-                value=sankey_data["link"]["value"],
-                # color=st.session_state.link_color,
-            ),
         )
-    )
-    st.session_state.fig = fig
+        st.session_state.fig = fig
 
-    # Update layout and show figure
-    fig.update_layout(
-        title_text="Sankey Diagram",
-        font_size=st.session_state.font_size,
-    )
-    # output the figure to streamlit
-    st.plotly_chart(fig, use_container_width=True)
+        # Update layout and show figure
+        fig.update_layout(
+            title_text="Sankey Diagram",
+            font_size=st.session_state.font_size,
+        )
+        # output the figure to streamlit
+        st.plotly_chart(fig, use_container_width=True)
 
 
 def main():
@@ -121,7 +120,7 @@ def main():
     st.title("Generate sankey!")
     display_sidebar_ui()
 
-    st.session_state.sankey_data = pd.DataFrame()
+    st.session_state.sankey_data = [pd.DataFrame()]
 
     files_uploaded = st.file_uploader(
         "Upload csv", type=["csv"], accept_multiple_files=True
@@ -133,12 +132,12 @@ def main():
             df = df.dropna(how="all")
             st.write(f"Found columns: {[col for col in df.columns]}")
             # Initialize empty dataframe to store all news
-            st.session_state.sankey_data = df
+            st.session_state.sankey_data.append(df)
 
     if not st.session_state.sankey_data.empty:
         # show button to generate sankey
         if st.button("Generate sankey"):
-            generate_sankey()
+            generate_sankeys()
 
 
 if __name__ == "__main__":
