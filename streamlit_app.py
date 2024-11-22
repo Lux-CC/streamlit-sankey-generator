@@ -45,10 +45,7 @@ def display_sidebar_ui():
 
 
 def generate_sankey():
-    if not st.session_state.sankey_data:
-        return
-    else:
-        df = st.session_state.sankey_data
+    df = st.session_state.sankey_data
 
     # Prepare unique values and mapping
     unique_cols = [df[col].unique() for col in df.columns]
