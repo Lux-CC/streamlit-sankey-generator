@@ -22,34 +22,42 @@ def display_sidebar_ui():
         # label_to_url = {label: url for url, label in rss_feed_labels.items()}
 
         # Get HEX color
-        selected_color = st.color_picker("Select color")
+        selected_color = st.color_picker("Select color", on_change=generate_sankey)
         # # Convert selected labels back to their URLs
         st.session_state.color = selected_color
 
         # Get input for graph title
-        st.session_state.graph_title = st.text_input("Enter graph title", value="Graph Title")
+        st.session_state.graph_title = st.text_input("Enter graph title", value="Graph Title", on_change=generate_sankey)
 
         # Get input for graph subtitle
-        st.session_state.graph_subtitle = st.text_input("Enter graph subtitle", value="Graph Subtitle")
+        st.session_state.graph_subtitle = st.text_input("Enter graph subtitle", value="Graph Subtitle", on_change=generate_sankey)
 
         # get input sliders for sankey pad and thickness
-        st.session_state.sankey_pad = st.slider("Sankey pad", 0, 100, 15)
-        st.session_state.sankey_thickness = st.slider("Sankey thickness", 0, 100, 20)
-        st.session_state.line_width = st.slider("Line width", 0.0, 5.5, 0.5, step=0.1)
-        st.session_state.font_size = st.slider("Font size", 0, 20, 10, step=1)
+        st.session_state.sankey_pad = st.slider("Sankey pad", 0, 100, 15, on_change=generate_sankey)
+        st.session_state.sankey_thickness = st.slider("Sankey thickness", 0, 100, 20, on_change=generate_sankey)
+        st.session_state.line_width = st.slider("Line width", 0.0, 5.5, 0.5, step=0.1, on_change=generate_sankey)
+        st.session_state.font_size = st.slider("Font size", 0, 20, 10, step=1, on_change=generate_sankey)
 
 
 
 
 
 
-def generate_sankey(df):
+
+def generate_sankey():
+    if not st.session_state.sankey_data:
+        return
+    else:
+        df = st.session_state.sankey_data
 
     # Prepare unique values and mapping
     unique_cols = [df[col].unique() for col in df.columns]
     all_values = [item for sublist in unique_cols for item in sublist]
 
     node_labels = list(pd.unique(all_values))
+    # limit the node label length to 20 characters
+    node_labels = [label[:20] for label in node_labels]
+
     label_to_index = {label: i for i, label in enumerate(node_labels)}
     
     # Create links
@@ -86,10 +94,10 @@ def generate_sankey(df):
             value=sankey_data['link']['value']
         )
     ))
-    
+    st.session_state.fig = fig    
+
     # Update layout and show figure
     fig.update_layout(title_text="Sankey Diagram", font_size=st.session_state.font_size)
-
     # output the figure to streamlit
     st.plotly_chart(fig, use_container_width=True)
 
@@ -107,10 +115,8 @@ def main():
 
     file_uploaded = st.file_uploader('Upload csv', type=['csv'], accept_multiple_files=False)
     if file_uploaded is not None:
-        st.write("Found columns: ")
         df = pd.read_csv(file_uploaded)
-        for col in df.columns:
-            st.write(col)
+        st.write(f"Found columns: {[col for col in df.columns]}")
         # Initialize empty dataframe to store all news
         st.session_state.sankey_data = df
 
