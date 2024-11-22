@@ -126,7 +126,7 @@ def main():
     if not st.session_state.sankey_data.empty:
         # show button to generate sankey
         if st.button("Generate sankey"):
-            generate_sankey(st.session_state.sankey_data)
+            generate_sankey()
 
 
 if __name__ == "__main__":
