@@ -13,35 +13,35 @@ def display_sidebar_ui():
         st.title("Configuration")
         # Get HEX color
         st.session_state.node_color = st.color_picker(
-            "Column color", on_change=generate_sankey
+            "Column color", on_change=generate_sankeys
         )
         st.session_state.link_color = st.color_picker(
-            "Link color", on_change=generate_sankey
+            "Link color", on_change=generate_sankeys
         )
         # # Convert selected labels back to their URLs
 
         # Get input for graph title
         st.session_state.graph_title = st.text_input(
-            "Enter graph title", value="Graph Title", on_change=generate_sankey
+            "Enter graph title", value="Graph Title", on_change=generate_sankeys
         )
 
         # Get input for graph subtitle
         st.session_state.graph_subtitle = st.text_input(
-            "Enter graph subtitle", value="Graph Subtitle", on_change=generate_sankey
+            "Enter graph subtitle", value="Graph Subtitle", on_change=generate_sankeys
         )
 
         # get input sliders for sankey pad and thickness
         st.session_state.sankey_pad = st.slider(
-            "Sankey pad", 0, 100, 15, on_change=generate_sankey
+            "Sankey pad", 0, 100, 15, on_change=generate_sankeys
         )
         st.session_state.sankey_thickness = st.slider(
-            "Sankey thickness", 0, 100, 20, on_change=generate_sankey
+            "Sankey thickness", 0, 100, 20, on_change=generate_sankeys
         )
         st.session_state.line_width = st.slider(
-            "Line width", 0.0, 5.5, 0.5, step=0.1, on_change=generate_sankey
+            "Line width", 0.0, 5.5, 0.5, step=0.1, on_change=generate_sankeys
         )
         st.session_state.font_size = st.slider(
-            "Font size", 0, 20, 10, step=1, on_change=generate_sankey
+            "Font size", 0, 20, 10, step=1, on_change=generate_sankeys
         )
 
 
