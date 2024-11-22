@@ -134,7 +134,7 @@ def main():
             # Initialize empty dataframe to store all news
             st.session_state.sankey_data.append(df)
 
-    if not st.session_state.sankey_data.empty:
+    if not st.session_state.sankey_data[0].empty:
         # show button to generate sankey
         if st.button("Generate sankey"):
             generate_sankeys()
