@@ -1,8 +1,4 @@
-import os
-import requests as r
 import pandas as pd
-import numpy as np
-import regex as re
 import streamlit as st
 import logging
 import pandas as pd

@@ -1,13 +1,6 @@
 streamlit==1.34.0
-replicate
-transformers
 plotly
 pandas
 numpy
 streamlit-plotly-events
 regex
-lxml
-python-dateutil
-requests
-bs4
-sentence-transformers
