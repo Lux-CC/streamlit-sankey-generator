@@ -10,18 +10,6 @@ logger = logging.getLogger(__name__)
 def display_sidebar_ui():
     with st.sidebar:
         st.title("Configuration")
-        # colors = {
-        #     "https://www.snowflake.com/feed/": "Snowflake Official",
-        #     "https://rss.aws-news.com/custom_feeds/FEzdG/rss": "AWS Snowflake News",
-        # }
-
-        # # Get the list of feed URLs and labels
-        # rss_feeds = list(rss_feed_labels.keys())
-        # feed_labels = list(rss_feed_labels.values())
-
-        # # Create a dictionary to map labels back to their URLs for later use
-        # label_to_url = {label: url for url, label in rss_feed_labels.items()}
-
         # Get HEX color
         st.session_state.node_color = st.color_picker(
             "Column color", on_change=generate_sankey
@@ -132,16 +120,17 @@ def main():
 
     st.session_state.sankey_data = pd.DataFrame()
 
-    file_uploaded = st.file_uploader(
-        "Upload csv", type=["csv"], accept_multiple_files=False
+    files_uploaded = st.file_uploader(
+        "Upload csv", type=["csv"], accept_multiple_files=True
     )
-    if file_uploaded is not None:
-        df = pd.read_csv(file_uploaded)
-        # clear empty rows
-        df = df.dropna(how="all")
-        st.write(f"Found columns: {[col for col in df.columns]}")
-        # Initialize empty dataframe to store all news
-        st.session_state.sankey_data = df
+    if files_uploaded is not None:
+        for file_uploaded in files_uploaded:
+            df = pd.read_csv(file_uploaded)
+            # clear empty rows
+            df = df.dropna(how="all")
+            st.write(f"Found columns: {[col for col in df.columns]}")
+            # Initialize empty dataframe to store all news
+            st.session_state.sankey_data = df
 
     if not st.session_state.sankey_data.empty:
         # show button to generate sankey
