@@ -23,18 +23,28 @@ def display_sidebar_ui():
 
         # Get HEX color
         selected_color = st.color_picker("Select color")
-
         # # Convert selected labels back to their URLs
         st.session_state.color = selected_color
 
-        # st.subheader("About")
-        # st.caption(
-        #     "Hi there! I hope this app helps you catch up with the latest news of snowflake. Note that performance can be greatly improved still, but I consider this the MVP. Have fun!"
-        # )
+        # Get input for graph title
+        st.session_state.graph_title = st.text_input("Enter graph title", value="Graph Title")
+
+        # Get input for graph subtitle
+        st.session_state.graph_subtitle = st.text_input("Enter graph subtitle", value="Graph Subtitle")
+
+        # get input sliders for sankey pad and thickness
+        st.session_state.sankey_pad = st.slider("Sankey pad", 0, 100, 15)
+        st.session_state.sankey_thickness = st.slider("Sankey thickness", 0, 100, 20)
+        st.session_state.line_width = st.slider("Line width", 0, 5, 0.5, step=0.1)
+        st.session_state.font_size = st.slider("Font size", 0, 20, 10, step=1)
+
+
+
+
 
 
 def generate_sankey(df):
-    
+
     # Prepare unique values and mapping
     unique_cols = [df[col].unique() for col in df.columns]
     all_values = [item for sublist in unique_cols for item in sublist]
@@ -65,9 +75,9 @@ def generate_sankey(df):
     # Create the Sankey diagram
     fig = go.Figure(go.Sankey(
         node=dict(
-            pad=15,
-            thickness=20,
-            line=dict(color="black", width=0.5),
+            pad=st.session_state.sankey_pad,
+            thickness=st.session_state.sankey_thickness,
+            line=dict(color="black", width=st.session_state.line_width),
             label=sankey_data['node']['label']
         ),
         link=dict(
@@ -78,7 +88,7 @@ def generate_sankey(df):
     ))
     
     # Update layout and show figure
-    fig.update_layout(title_text="Sankey Diagram", font_size=10)
+    fig.update_layout(title_text="Sankey Diagram", font_size=st.session_state.font_size)
 
     # output the figure to streamlit
     st.plotly_chart(fig, use_container_width=True)
