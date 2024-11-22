@@ -105,10 +105,10 @@ def main():
         st.session_state.sankey_data = df
 
 
-    if not st.session_state.data.empty:
+    if not st.session_state.sankey_data.empty:
         # show button to generate sankey
         if st.button("Generate sankey"):
-            generate_sankey(st.session_state.data)
+            generate_sankey(st.session_state.sankey_data)
 
 
 if __name__ == "__main__":
