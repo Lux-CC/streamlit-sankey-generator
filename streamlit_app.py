@@ -9,9 +9,6 @@ import pandas as pd
 import plotly.graph_objects as go
 logger = logging.getLogger(__name__)
 
-# Set Replicate API token
-os.environ["REPLICATE_API_TOKEN"] = st.secrets["REPLICATE_API_TOKEN"]
-
 
 def display_sidebar_ui():
     with st.sidebar:
@@ -112,7 +109,7 @@ def main():
         st.session_state.sankey_data = df
 
 
-    if not st.session_state.sankey_data.empty:
+    if not st.session_state.data.empty:
         # show button to generate sankey
         if st.button("Generate sankey"):
             generate_sankey(st.session_state.data)
