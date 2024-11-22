@@ -3,6 +3,7 @@ import streamlit as st
 import logging
 import pandas as pd
 import plotly.graph_objects as go
+import textwrap
 
 logger = logging.getLogger(__name__)
 
@@ -73,7 +74,9 @@ def generate_sankey():
 
     # Prepare data for the Sankey diagram
     sankey_data = {
-        "node": {"label": [f"{label[:80]}..." for label in node_labels]},
+
+        # wrap lines each 40 characters and 80 and 120 etc. (insert \n)
+        "node": {"label": [textwrap.fill(label, width=40) for label in node_labels]},
         "link": {
             "source": [link["source"] for link in links],
             "target": [link["target"] for link in links],
