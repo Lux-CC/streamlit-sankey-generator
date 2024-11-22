@@ -35,7 +35,7 @@ def display_sidebar_ui():
         # get input sliders for sankey pad and thickness
         st.session_state.sankey_pad = st.slider("Sankey pad", 0, 100, 15)
         st.session_state.sankey_thickness = st.slider("Sankey thickness", 0, 100, 20)
-        st.session_state.line_width = st.slider("Line width", 0.0, 5.0, 0.5, step=0.1)
+        st.session_state.line_width = st.slider("Line width", 0.0, 5.5, 0.5, step=0.1)
         st.session_state.font_size = st.slider("Font size", 0, 20, 10, step=1)
 
 
