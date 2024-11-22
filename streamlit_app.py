@@ -76,7 +76,7 @@ def generate_sankey():
     sankey_data = {
 
         # wrap lines each 40 characters and 80 and 120 etc. (insert \n)
-        "node": {"label": [textwrap.fill(label, width=40) for label in node_labels]},
+        "node": {"label": [textwrap.fill(label, width=20) for label in node_labels]},
         "link": {
             "source": [link["source"] for link in links],
             "target": [link["target"] for link in links],
