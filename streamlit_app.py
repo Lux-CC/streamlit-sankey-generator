@@ -116,6 +116,8 @@ def main():
     file_uploaded = st.file_uploader('Upload csv', type=['csv'], accept_multiple_files=False)
     if file_uploaded is not None:
         df = pd.read_csv(file_uploaded)
+        # clear empty rows
+        df = df.dropna(how='all')
         st.write(f"Found columns: {[col for col in df.columns]}")
         # Initialize empty dataframe to store all news
         st.session_state.sankey_data = df
