@@ -73,10 +73,9 @@ def generate_sankeys():
 
         # Prepare data for the Sankey diagram
         sankey_data = {
-
             # wrap lines each 40 characters and 80 and 120 etc. (insert \n)
             "node": {
-                "label": [textwrap.fill(label, width=40).replace('\n', '<br>') for label in node_labels]
+                "label": [textwrap.fill(label, width=40).replace('\n', '<br>') for label in node_labels],
                 "x": [0, 0.1].extend([0.9/len(node_labels-2)* i for i in range(len(node_labels-2))]), # type: ignore
             },
             "link": {
