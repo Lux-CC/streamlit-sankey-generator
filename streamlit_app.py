@@ -27,7 +27,7 @@ def display_sidebar_ui():
             "Select a colorscale",
             # get list of px.colors.qualitative colors
             qualitative_color_scales,
-            key="colorscale",
+            key="color_scale",
         )
 
 
@@ -63,8 +63,8 @@ def generate_sankeys():
                 node={
                     "label": nodes.index,
                     "color": [
-                        px.colors.qualitative.Plotly[
-                            i % len(px.colors.qualitative.Plotly)
+                        px.colors.qualitative[st.session_state.color_scale][
+                            i % len(px.colors.qualitative[st.session_state.color_scale])
                         ]
                         for i in nodes
                     ],
@@ -76,8 +76,8 @@ def generate_sankeys():
                     "target": nodes.loc[df["target"]],
                     "value": df["value"],
                     "color": [
-                        px.colors.qualitative.Plotly[
-                            i % len(px.colors.qualitative.Plotly)
+                        px.colors.qualitative[st.session_state.color_scale][
+                            i % len(px.colors.qualitative[st.session_state.color_scale])
                         ]
                         for i in nodes.loc[df["target"]]
                     ],
@@ -103,6 +103,7 @@ def main():
     st.set_page_config(page_title="Generate sankey for Milou!")
     st.title("Generate sankey for Milou!")
     st.session_state.sankey_data = []
+    st.session_state.color_scale = "Plotly"
 
     files_uploaded = st.file_uploader(
         "Upload csv", type=["csv"], accept_multiple_files=True
