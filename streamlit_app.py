@@ -61,7 +61,7 @@ def generate_sankeys():
 
         fig = go.Figure(
             go.Sankey(
-                textfont=dict(color=f"rgba(0,0,0,{st.session_state.opacity})", size=0),
+                textfont=dict(color=f"rgba(0,0,0,{st.session_state.opacity})", size=1),
                 node={
                     "label": nodes.index,
                     "color": [
