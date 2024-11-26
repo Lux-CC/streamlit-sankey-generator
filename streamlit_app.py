@@ -4,9 +4,9 @@ import logging
 import plotly.graph_objects as go
 import plotly.express as px
 import numpy as np
-import textwrap
-import holoviews as hv
-hv.extension('bokeh')
+import matplotlib.pyplot as plt
+from matplotlib.sankey import Sankey
+
 
 logger = logging.getLogger(__name__)
 
@@ -98,12 +98,31 @@ def generate_sankeys():
         # output the figure to streamlit
         st.plotly_chart(fig, use_container_width=True)
 
-        # now also create a holoviews fig
-        # convert the dataframe to a source, target, value df
-        nice_plot = hv.Sankey(
-            df[["source", "target", "value"]],
-        )
-        st.bokeh_chart(hv.render(nice_plot, backend="bokeh"))        
+        # now also create a matplotlib sankey diagram fig
+        fig = plot_sankey()
+        st.pyplot(fig)
+
+
+# Define a function to create the Sankey diagram
+def plot_sankey():
+    # Create the figure
+    fig, ax = plt.subplots(figsize=(8, 6))
+    
+    # Define the Sankey diagram
+    sankey = Sankey(ax=ax, unit=None)
+    sankey.add(flows=[100, -70, -30],  # Flows: positive for input, negative for output
+               labels=['Input', 'Output 1', 'Output 2'], 
+               orientations=[0, 1, -1])  # Orientation of flows
+    sankey.finish()
+    
+    # Set the title
+    ax.set_title("Sankey Diagram Example")
+    
+    # Return the figure
+    return fig
+
+
+                
 
 
 
