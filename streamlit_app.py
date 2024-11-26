@@ -130,10 +130,9 @@ def main():
         st.session_state.sankey_data = []
         for file_uploaded in files_uploaded:
             # read csv, strings are quotes with "" and columns are comma separated. Ignore extra whitespaces on both ends.
-            # also, ignore empty lines
-            df = pd.read_csv(file_uploaded, quotechar='"', skipinitialspace=True, skip_blank_lines=True)
+            df = pd.read_csv(file_uploaded, quotechar='"', skipinitialspace=True)
             # clear empty rows
-            df = df.dropna(how="all")
+            df = df.dropna(how="any", axis=0)
             # show last 3 rows
             st.write(f"Last 3 rows: {df.tail(3)}")
             
