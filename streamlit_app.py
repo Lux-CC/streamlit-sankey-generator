@@ -109,6 +109,7 @@ def generate_sankeys():
         fig.update_layout(
             title_text="Sankey Diagram",
         )
+        st.plotly_chart(st.session_state.fig, use_container_width=True, key="my_chart")
 
         st.session_state.fig = fig
         
@@ -138,10 +139,8 @@ def main():
             # Initialize empty dataframe to store all news
             st.session_state.sankey_data.append(df)
 
-    if st.session_state.sankey_data:
         # show button to generate sankey
         generate_sankeys()
-        st.plotly_chart(st.session_state.fig, use_container_width=True, key="my_chart")
 
     display_sidebar_ui()
 
