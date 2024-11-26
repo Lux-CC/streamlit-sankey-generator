@@ -96,7 +96,7 @@ def generate_sankeys():
                     ],
                 },
             )
-        ))
+        )
         
         fig.update_layout(
             title_text="Sankey Diagram",
