@@ -57,6 +57,9 @@ def generate_sankeys():
         nodes = pd.Series(index=nodes, data=range(len(nodes)))
         # rename the first column "source and the last target"
         df = df.rename(columns={df.columns[0]: "source", df.columns[-1]: "target"})
+        # add a column "value" with value 1
+        df["value"] = 1
+        
         fig = go.Figure(
             go.Sankey(
                 node={
@@ -71,7 +74,7 @@ def generate_sankeys():
                 link={
                     "source": nodes.loc[df["source"]],
                     "target": nodes.loc[df["target"]],
-                    "value": 1,
+                    "value": df["value"],
                     "color": [
                         px.colors.qualitative.Plotly[
                             i % len(px.colors.qualitative.Plotly)
