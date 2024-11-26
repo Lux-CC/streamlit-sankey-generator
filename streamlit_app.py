@@ -109,9 +109,7 @@ def generate_sankeys():
         fig.update_layout(
             title_text="Sankey Diagram",
         )
-        st.plotly_chart(fig, use_container_width=True, key="my_chart")
-
-        st.session_state.fig = fig
+        st.plotly_chart(fig, use_container_width=True)
         
 
 def main():
