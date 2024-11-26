@@ -76,7 +76,6 @@ def generate_sankeys():
             # wrap lines each 40 characters and 80 and 120 etc. (insert \n)
             "node": {
                 "label": [textwrap.fill(label, width=40).replace('\n', '<br>') for label in node_labels],
-                "x": [0,0.1,0.4,0.99]
             },
             "link": {
                 "source": [link["source"] for link in links],
@@ -119,7 +118,7 @@ def main():
     Main function to run the Streamlit app.
     """
     st.set_page_config(page_title="Generate sankey for Milou!")
-    st.title("Generate sankey!")
+    st.title("Generate sankey for Milou!")
     display_sidebar_ui()
 
     st.session_state.sankey_data = []
