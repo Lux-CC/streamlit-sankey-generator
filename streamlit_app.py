@@ -1,7 +1,6 @@
 import pandas as pd
 import streamlit as st
 import logging
-import pandas as pd
 import plotly.graph_objects as go
 import textwrap
 
@@ -131,6 +130,8 @@ def main():
             df = pd.read_csv(file_uploaded)
             # clear empty rows
             df = df.dropna(how="all")
+            # drop second column
+            df = df.drop(df.columns[1], axis=1)
             st.write(f"Found columns: {[col for col in df.columns]}")
             # Initialize empty dataframe to store all news
             st.session_state.sankey_data.append(df)
