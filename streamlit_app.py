@@ -103,7 +103,7 @@ def generate_sankeys():
             df[["source", "target", "value"]],
         )
 
-        st.bokeh_chart(hv.render(nice_plot, backend='bokeh'))
+        st.bokeh_chart(hv.render(nice_plot, backend='matplotlib'))
 
 
 
