@@ -98,12 +98,9 @@ def generate_sankeys():
         st.plotly_chart(fig, use_container_width=True)
 
         # now also create a holoviews fig
+        # convert the dataframe to a source, target, value df
         nice_plot = hv.Sankey(
-            df,
-            label_position="left",
-            width=1000,
-            height=800,
-            edge_line_width=st.session_state.line_width,
+            df[["source", "target", "value"]],
         )
 
         st.st.bokeh_chart(hv.render(nice_plot, backend='bokeh'))
