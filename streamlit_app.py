@@ -6,6 +6,7 @@ import plotly.express as px
 import numpy as np
 import textwrap
 import holoviews as hv
+hv.extension('bokeh')
 
 logger = logging.getLogger(__name__)
 
@@ -102,8 +103,8 @@ def generate_sankeys():
         nice_plot = hv.Sankey(
             df[["source", "target", "value"]],
         )
+        st.bokeh_chart(hv.render(nice_plot, backend="bokeh"))        
 
-        st.bokeh_chart(hv.render(nice_plot, backend='matplotlib'))
 
 
 
