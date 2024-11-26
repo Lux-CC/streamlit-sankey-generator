@@ -124,9 +124,9 @@ def main():
     if st.session_state.sankey_data:
         # show button to generate sankey
         generate_sankeys()
+        st.plotly_chart(st.session_state.fig, use_container_width=True, key="my_chart")
 
     display_sidebar_ui()
-    st.plotly_chart(st.session_state.fig, use_container_width=True, key="my_chart")
 
 if __name__ == "__main__":
     main()
