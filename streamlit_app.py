@@ -22,15 +22,6 @@ def display_sidebar_ui():
             "Text Opacity", 0, 100, 100, key="opacity"
         )
 
-        # Get input for graph title
-        values = st.text_input(
-            "Enter graph title", value="Graph Title", key="graph_title"
-        )
-
-        # Get input for graph subtitle
-        values = st.text_input(
-            "Enter graph subtitle", value="Graph Subtitle", key="graph_subtitle"
-        )
 
         # get input sliders for sankey pad and thickness
         values = st.slider(
