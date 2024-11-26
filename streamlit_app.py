@@ -63,8 +63,8 @@ def generate_sankeys():
                 node={
                     "label": nodes.index,
                     "color": [
-                        px.colors.qualitative[st.session_state.color_scale][
-                            i % len(px.colors.qualitative[st.session_state.color_scale])
+                        getattr(px.colors.qualitative, st.session_state.color_scale)[
+                            i % len(getattr(px.colors.qualitative, st.session_state.color_scale))
                         ]
                         for i in nodes
                     ],
@@ -76,8 +76,8 @@ def generate_sankeys():
                     "target": nodes.loc[df["target"]],
                     "value": df["value"],
                     "color": [
-                        px.colors.qualitative[st.session_state.color_scale][
-                            i % len(px.colors.qualitative[st.session_state.color_scale])
+                        getattr(px.colors.qualitative, st.session_state.color_scale)[
+                            i % len(getattr(px.colors.qualitative, st.session_state.color_scale))
                         ]
                         for i in nodes.loc[df["target"]]
                     ],
