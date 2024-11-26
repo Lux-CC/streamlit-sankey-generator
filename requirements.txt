@@ -3,5 +3,5 @@ pandas
 numpy
 streamlit-plotly-events
 regex
-matplotlib
+bokey==2.4.3
 holoviews
