@@ -18,7 +18,7 @@ def display_sidebar_ui():
         values = st.checkbox("CSV contains column names", value=True, key="csv_has_header")
         values = st.checkbox("use arrows in plot", value=True, key="use_arrows")
         values = st.slider(
-            "Text Size", 0, 100, 10, key="font_size"
+            "Text Size", 1, 100, 10, key="font_size"
         )
         values = st.slider(
             "Text Opacity", 0, 100, 100, key="opacity"
@@ -42,7 +42,7 @@ def display_sidebar_ui():
             "Sankey pad", 0, 100, 15, key="sankey_pad"
         )
         values = st.slider(
-            "Sankey thickness", 0, 100, 20, key="sankey_thickness"
+            "Sankey thickness", 1, 100, 20, key="sankey_thickness"
         )
         values = st.slider(
             "Line width", 0.0, 5.5, 0.5, step=0.1, key="line_width"
