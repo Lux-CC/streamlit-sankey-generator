@@ -84,14 +84,14 @@ def generate_sankeys():
                 },
             )
         )
-        st.session_state.fig = fig
-
-        # Update layout and show figure
         fig.update_layout(
             title_text="Sankey Diagram",
         )
-        # output the figure to streamlit
-        st.plotly_chart(st.session_state.fig, use_container_width=True, key="my_chart")
+
+        st.session_state.fig = fig
+
+        # Update layout and show figure
+        
 
             
 
@@ -126,6 +126,7 @@ def main():
         generate_sankeys()
 
     display_sidebar_ui()
+    st.plotly_chart(st.session_state.fig, use_container_width=True, key="my_chart")
 
 if __name__ == "__main__":
     main()
