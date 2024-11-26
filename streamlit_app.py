@@ -86,8 +86,7 @@ def generate_sankeys():
                 link={
                     # add links from mid_target to end_target
                     "source": nodes.loc[df["mid_target"]],
-                    "target": nodes.loc[df["end_target"]]
-
+                    "target": nodes.loc[df["end_target"]],
                     "value": df["value"],
                     "color": [
                         getattr(px.colors.qualitative, st.session_state.color_scale)[
@@ -97,7 +96,8 @@ def generate_sankeys():
                     ],
                 },
             )
-        )
+        ))
+        
         fig.update_layout(
             title_text="Sankey Diagram",
         )
