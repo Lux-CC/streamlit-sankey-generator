@@ -4,5 +4,6 @@ pandas
 numpy
 streamlit-plotly-events
 regex
+hvplot
 bokeh==2.4.3
 holoviews
