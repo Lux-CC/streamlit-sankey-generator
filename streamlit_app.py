@@ -21,7 +21,7 @@ def display_sidebar_ui():
         values = st.slider(
             "Text Opacity", 0, 100, 100, key="opacity"
         )
-        values = st.dropdown(
+        values = st.selectbox(
             "Select a colorscale",
             px.colors.named_colorscales(),
             key="colorscale",
