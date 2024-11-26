@@ -132,6 +132,7 @@ def main():
         st.session_state.csv_has_header = True
     if not "color_scale" in st.session_state:
         st.session_state.color_scale = "Plotly"
+        st.session_state.link_opacity = 100
 
     files_uploaded = st.file_uploader(
         "Upload csv", type=["csv"], accept_multiple_files=True
