@@ -134,6 +134,8 @@ def main():
             df = pd.read_csv(file_uploaded, quotechar='"', skipinitialspace=True, skip_blank_lines=True)
             # clear empty rows
             df = df.dropna(how="all")
+            # show last 3 rows
+            st.write(f"Last 3 rows: {df.tail(3)}")
             
             st.write(f"Found columns: {[col for col in df.columns]}")
             # Initialize empty dataframe to store all news
