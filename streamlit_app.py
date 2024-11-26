@@ -4,10 +4,9 @@ import logging
 import plotly.graph_objects as go
 import plotly.express as px
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.sankey import Sankey
-from pysankey import sankey
-
 
 
 logger = logging.getLogger(__name__)
@@ -17,11 +16,8 @@ def display_sidebar_ui():
     with st.sidebar:
         st.title("Configuration")
         # Get HEX color
-        st.session_state.node_color = st.color_picker(
-            "Column color", on_change=generate_sankeys
-        )
-        st.session_state.link_color = st.color_picker(
-            "Link color", on_change=generate_sankeys
+        st.session_state.font_color = st.color_picker(
+            "Font color", on_change=generate_sankeys, value='#ffffff00'
         )
         # # Convert selected labels back to their URLs
 
@@ -45,9 +41,9 @@ def display_sidebar_ui():
         st.session_state.line_width = st.slider(
             "Line width", 0.0, 5.5, 0.5, step=0.1, on_change=generate_sankeys
         )
-        st.session_state.font_size = st.slider(
-            "Font size", 0, 20, 10, step=1, on_change=generate_sankeys
-        )
+        # st.session_state.font_size = st.slider(
+        #     "Font size", 0, 20, 10, step=1, on_change=generate_sankeys
+        # )
 
 
 def generate_sankeys():
@@ -66,6 +62,7 @@ def generate_sankeys():
 
         fig = go.Figure(
             go.Sankey(
+                textcolor=dict(color=st.session_state.font_color, size=1),
                 node={
                     "label": nodes.index,
                     "color": [
@@ -95,18 +92,11 @@ def generate_sankeys():
         # Update layout and show figure
         fig.update_layout(
             title_text="Sankey Diagram",
-            font_size=st.session_state.font_size,
         )
         # output the figure to streamlit
         st.plotly_chart(fig, use_container_width=True)
 
-        # now also create a matplotlib sankey diagram fig
-        fig = sankey(
-            left=df['source'], right=df['target'], rightWeight=df['value'], aspect=20,
-            fontsize=20, figureName="customer-good"
-        )
-        st.pyplot(fig)
-
+            
 
 
 def main():
