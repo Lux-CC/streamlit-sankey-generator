@@ -92,7 +92,8 @@ def generate_sankeys():
                 # set to he color of the target node color
                 "color": [
                     px.colors.qualitative.Plotly[i % len(px.colors.qualitative.Plotly)]
-                    for i in nodes.loc[df["source"]]
+                    # loop over the last column and get the color of the last column
+                    for i in nodes.loc[df.iloc[:, -1]]
                 ],
             },
         }
