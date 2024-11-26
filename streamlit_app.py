@@ -117,9 +117,7 @@ def create_sankey():
     sankey.add(flows=flows, labels=labels, orientations=orientations, facecolor='blue')
     diagrams = sankey.finish()
 
-    fig, ax = plt.subplots(figsize=(10, 7))
-    ax.add_collection(diagrams)
-    ax.title.set_text('Energy Flow Sankey Diagram')
+    fig = plt.subplots(figsize=(10, 7))
     plt.tight_layout()
     return fig
                 
