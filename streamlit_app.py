@@ -15,6 +15,9 @@ logger = logging.getLogger(__name__)
 def display_sidebar_ui():
     with st.sidebar:
         st.title("Configuration")
+        st.session_state.font_size = st.slider(
+            "Text Opacity", 0, 100, 10, on_change=generate_sankeys
+        )
         st.session_state.opacity = st.slider(
             "Text Opacity", 0, 100, 100, on_change=generate_sankeys
         )
@@ -61,7 +64,7 @@ def generate_sankeys():
 
         fig = go.Figure(
             go.Sankey(
-                textfont=dict(color=f"rgba(0,0,0,{st.session_state.opacity})", size=1),
+                textfont=dict(color=f"rgba(0,0,0,{st.session_state.opacity})", size=st.session_state.font_size),
                 node={
                     "label": nodes.index,
                     "color": [
@@ -93,7 +96,7 @@ def generate_sankeys():
             title_text="Sankey Diagram",
         )
         # output the figure to streamlit
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(st.session_state.fig, use_container_width=True)
 
             
 
@@ -104,8 +107,6 @@ def main():
     """
     st.set_page_config(page_title="Generate sankey for Milou!")
     st.title("Generate sankey for Milou!")
-    display_sidebar_ui()
-
     st.session_state.sankey_data = []
 
     files_uploaded = st.file_uploader(
@@ -127,6 +128,7 @@ def main():
         if st.button("Generate sankey"):
             generate_sankeys()
 
+    display_sidebar_ui()
 
 if __name__ == "__main__":
     main()
