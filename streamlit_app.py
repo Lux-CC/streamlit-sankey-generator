@@ -22,6 +22,10 @@ def display_sidebar_ui():
         values = st.slider(
             "Text Opacity", 0, 100, 100, key="opacity"
         )
+        values = st.slider(
+            "Connector Opacity", 0, 100, 100, key="link_opacity"
+        )
+
         qualitative_color_scales = [scale for scale in dir(px.colors.qualitative) if not scale.startswith("__")]
 
         values = st.selectbox(
@@ -61,7 +65,9 @@ def generate_sankeys():
         # Create color generator function
         color_palette = getattr(px.colors.qualitative, st.session_state.color_scale)
         def get_color(index):
-            return color_palette[index % len(color_palette)]
+            base_color = color_palette[index % len(color_palette)]
+            # Convert the rgb color to rgba with configurable opacity
+            return base_color.replace('rgb', 'rgba').replace(')', f',{st.session_state.link_opacity})')
 
         # Create node colors
         node_colors = [get_color(i) for i in range(len(nodes))]
@@ -103,7 +109,7 @@ def generate_sankeys():
                     "source": sources,
                     "target": targets,
                     "value": values,
-                    "color": link_colors
+                    "color": link_colors,
                 }
             )
         )
