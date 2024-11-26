@@ -120,6 +120,7 @@ def main():
         "Upload csv", type=["csv"], accept_multiple_files=True
     )
     if files_uploaded is not None:
+        st.session_state.sankey_data = []
         for file_uploaded in files_uploaded:
             df = pd.read_csv(file_uploaded)
             # clear empty rows
