@@ -136,10 +136,8 @@ def main():
             df = pd.read_csv(file_uploaded, quotechar='"', skipinitialspace=True, header=1 if st.session_state.csv_has_header else 0)
             # clear empty rows
             df = df.dropna(how="any", axis=0)
-            # show last 3 rows
-            st.write(f"Last 3 rows: {df.tail(3)}")
-            
-            st.write(f"Found columns: {[col for col in df.columns]}")
+
+            st.success(f"Found columns: {[col for col in df.columns]}")
             # Initialize empty dataframe to store all news
             st.session_state.sankey_data.append(df)
 
