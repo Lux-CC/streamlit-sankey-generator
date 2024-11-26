@@ -79,7 +79,7 @@ def generate_sankeys():
                         px.colors.qualitative.Plotly[
                             i % len(px.colors.qualitative.Plotly)
                         ]
-                        for i in nodes.loc[df["source"]]
+                        for i in nodes.loc[df["target"]]
                     ],
                 },
             )
