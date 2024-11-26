@@ -56,47 +56,41 @@ def generate_sankeys():
         df = df.rename(columns={df.columns[0]: "source", df.columns[1]: "mid_target", df.columns[-1]: "end_target"})
         # add a column "value" with value 1
         df["value"] = 1
+        # Create color list once for reuse
+        color_palette = getattr(px.colors.qualitative, st.session_state.color_scale)
+        def get_color(index):
+            return color_palette[index % len(color_palette)]
+
+        # Create node colors
+        node_colors = [get_color(i) for i in nodes]
+
+        # Combine source-to-mid and mid-to-end links
+        sources = list(nodes.loc[df["source"]]) + list(nodes.loc[df["mid_target"]])
+        targets = list(nodes.loc[df["mid_target"]]) + list(nodes.loc[df["end_target"]])
+        values = list(df["value"]) + list(df["value"])
+        link_colors = [get_color(i) for i in nodes.loc[df["mid_target"]]] + [get_color(i) for i in nodes.loc[df["end_target"]]]
 
         fig = go.Figure(
             go.Sankey(
-                textfont=dict(color=f"rgba(0,0,0,{st.session_state.opacity})", size=st.session_state.font_size),
+                textfont=dict(
+                    color=f"rgba(0,0,0,{st.session_state.opacity})", 
+                    size=st.session_state.font_size
+                ),
                 node={
                     "label": nodes.index,
-                    "color": [
-                        getattr(px.colors.qualitative, st.session_state.color_scale)[
-                            i % len(getattr(px.colors.qualitative, st.session_state.color_scale))
-                        ]
-                        for i in nodes
-                    ],
-                    "pad": st.session_state.sankey_pad,  # 15 pixels
-                    "thickness": st.session_state.sankey_thickness,  # 20 pixels
+                    "color": node_colors,
+                    "pad": st.session_state.sankey_pad,
+                    "thickness": st.session_state.sankey_thickness,
                 },
                 link={
-                    # add links from source to mid_target and from mid_target to end_target
-                    "source": nodes.loc[df["source"]],
-                    "target": nodes.loc[df["mid_target"]],
-                    "value": df["value"],
-                    "color": [
-                        getattr(px.colors.qualitative, st.session_state.color_scale)[
-                            i % len(getattr(px.colors.qualitative, st.session_state.color_scale))
-                        ]
-                        for i in nodes.loc[df["mid_target"]]
-                    ],
-                },
-                link={
-                    # add links from mid_target to end_target
-                    "source": nodes.loc[df["mid_target"]],
-                    "target": nodes.loc[df["end_target"]],
-                    "value": df["value"],
-                    "color": [
-                        getattr(px.colors.qualitative, st.session_state.color_scale)[
-                            i % len(getattr(px.colors.qualitative, st.session_state.color_scale))
-                        ]
-                        for i in nodes.loc[df["end_target"]]
-                    ],
-                },
+                    "source": sources,
+                    "target": targets,
+                    "value": values,
+                    "color": link_colors
+                }
             )
         )
+
         
         fig.update_layout(
             title_text="Sankey Diagram",
