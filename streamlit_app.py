@@ -67,7 +67,7 @@ def generate_sankeys():
         def get_color(index):
             base_color = color_palette[index % len(color_palette)]
             # Convert the HEX color to to rgba with configurable opacity
-            rgba_color = f"rgba({int(base_color[1:3], 16)}, {int(base_color[3:5], 16)}, {int(base_color[5:7], 16)}, {st.session_state.link_opacity / 100})"
+            return f"rgba({int(base_color[1:3], 16)}, {int(base_color[3:5], 16)}, {int(base_color[5:7], 16)}, {st.session_state.link_opacity / 100})"
 
         # Create node colors
         node_colors = [get_color(i) for i in range(len(nodes))]
