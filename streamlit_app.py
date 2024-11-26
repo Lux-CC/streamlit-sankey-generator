@@ -104,6 +104,10 @@ def generate_sankeys():
                     "label": nodes.index,
                     "color": node_colors,
                     "pad": st.session_state.sankey_pad,
+                    "line": {
+                        "color": "black",
+                        "width": st.session_state.line_width,
+                    },
                     "thickness": st.session_state.sankey_thickness,
                 },
                 link={
