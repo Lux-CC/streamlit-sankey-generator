@@ -16,7 +16,7 @@ def display_sidebar_ui():
     with st.sidebar:
         st.title("Configuration")
         values = st.slider(
-            "Text Opacity", 0, 100, 10, key="font_size"
+            "Text Size", 0, 100, 10, key="font_size"
         )
         values = st.slider(
             "Text Opacity", 0, 100, 100, key="opacity"
