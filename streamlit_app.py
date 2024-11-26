@@ -53,7 +53,7 @@ def generate_sankeys():
         nodes = np.unique(df, axis=None)
         nodes = pd.Series(index=nodes, data=range(len(nodes)))
         # rename the first column "source and the last target"
-        df = df.rename(columns={df.columns[0]: "source", df.columns[-1]: "target"})
+        df = df.rename(columns={df.columns[0]: "source", df.columns[1]: "mid_target", df.columns[-1]: "end_target"})
         # add a column "value" with value 1
         df["value"] = 1
 
@@ -72,14 +72,28 @@ def generate_sankeys():
                     "thickness": st.session_state.sankey_thickness,  # 20 pixels
                 },
                 link={
+                    # add links from source to mid_target and from mid_target to end_target
                     "source": nodes.loc[df["source"]],
-                    "target": nodes.loc[df["target"]],
+                    "target": nodes.loc[df["mid_target"]],
                     "value": df["value"],
                     "color": [
                         getattr(px.colors.qualitative, st.session_state.color_scale)[
                             i % len(getattr(px.colors.qualitative, st.session_state.color_scale))
                         ]
-                        for i in nodes.loc[df["target"]]
+                        for i in nodes.loc[df["mid_target"]]
+                    ],
+                },
+                link={
+                    # add links from mid_target to end_target
+                    "source": nodes.loc[df["mid_target"]],
+                    "target": nodes.loc[df["end_target"]]
+
+                    "value": df["value"],
+                    "color": [
+                        getattr(px.colors.qualitative, st.session_state.color_scale)[
+                            i % len(getattr(px.colors.qualitative, st.session_state.color_scale))
+                        ]
+                        for i in nodes.loc[df["end_target"]]
                     ],
                 },
             )
