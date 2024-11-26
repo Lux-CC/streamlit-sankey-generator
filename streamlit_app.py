@@ -21,6 +21,11 @@ def display_sidebar_ui():
         values = st.slider(
             "Text Opacity", 0, 100, 100, key="opacity"
         )
+        values = st.dropdown(
+            "Select a colorscale",
+            px.colors.named_colorscales(),
+            key="colorscale",
+        )
 
 
         # get input sliders for sankey pad and thickness
