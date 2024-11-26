@@ -99,29 +99,29 @@ def generate_sankeys():
         st.plotly_chart(fig, use_container_width=True)
 
         # now also create a matplotlib sankey diagram fig
-        fig = plot_sankey()
+        fig = create_sankey()
         st.pyplot(fig)
 
 
 # Define a function to create the Sankey diagram
-def plot_sankey():
-    # Create the figure
-    fig, ax = plt.subplots(figsize=(8, 6))
-    
-    # Define the Sankey diagram
-    sankey = Sankey(ax=ax, unit=None)
-    sankey.add(flows=[100, -70, -30],  # Flows: positive for input, negative for output
-               labels=['Input', 'Output 1', 'Output 2'], 
-               orientations=[0, 1, -1])  # Orientation of flows
-    sankey.finish()
-    
-    # Set the title
-    ax.set_title("Sankey Diagram Example")
-    
-    # Return the figure
+def create_sankey():
+    sankey = Sankey(unit=None)  # Disable unit display
+
+    # Define the flows: positive values are inputs, negative are outputs
+    # For simplicity, we'll aggregate flows by source
+    flows = [80, 60, 50, -50, -30, -40, -60, -20, -30]  # Example flows
+    labels = ['Total Sources', 'Coal', 'Natural Gas', 'Nuclear',
+              'Residential', 'Commercial', 'Industrial', '', '']
+    orientations = [0, 1, 1, 1, 0, 0, 0, 0, 0]
+
+    sankey.add(flows=flows, labels=labels, orientations=orientations, facecolor='blue')
+    diagrams = sankey.finish()
+
+    fig, ax = plt.subplots(figsize=(10, 7))
+    ax.add_collection(diagrams)
+    ax.title.set_text('Energy Flow Sankey Diagram')
+    plt.tight_layout()
     return fig
-
-
                 
 
 
