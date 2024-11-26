@@ -91,7 +91,7 @@ def generate_sankeys():
             title_text="Sankey Diagram",
         )
         # output the figure to streamlit
-        st.plotly_chart(st.session_state.fig, use_container_width=True)
+        st.plotly_chart(st.session_state.fig, use_container_width=True, key="my_chart")
 
             
 
