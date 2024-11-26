@@ -16,6 +16,7 @@ def display_sidebar_ui():
         st.title("Configuration")
         # checkbox if the CSV contain column names in the first row or not
         values = st.checkbox("CSV contains column names", value=True, key="csv_has_header")
+        values = st.checkbox("use arrows in plot", value=True, key="use_arrows")
         values = st.slider(
             "Text Size", 0, 100, 10, key="font_size"
         )
@@ -110,6 +111,7 @@ def generate_sankeys():
                     "target": targets,
                     "value": values,
                     "color": link_colors,
+                    "arrowlen": 15 if st.session_state.use_arrow else 0,
                 }
             )
         )
@@ -133,6 +135,7 @@ def main():
     if not "color_scale" in st.session_state:
         st.session_state.color_scale = "Plotly"
         st.session_state.link_opacity = 100
+        st.session_state.use_arrows = True
 
     files_uploaded = st.file_uploader(
         "Upload csv", type=["csv"], accept_multiple_files=True
