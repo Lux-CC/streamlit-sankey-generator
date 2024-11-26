@@ -48,12 +48,13 @@ def generate_sankeys():
         return
 
     for df in st.session_state.sankey_data:
-        # Prepare unique values and mapping
-        nodes = np.unique(df, axis=None)
+        # Prepare unique values and mapping (excluding the 'value' column)
+        value_col = "value"
+        df[value_col] = 1
+        
+        # Get all unique nodes excluding the value column
+        nodes = np.unique(df.drop(columns=[value_col]).values, axis=None)
         nodes = pd.Series(index=nodes, data=range(len(nodes)))
-
-        # add a column "value" with value 1
-        df["value"] = 1
 
         # Create color generator function
         color_palette = getattr(px.colors.qualitative, st.session_state.color_scale)
@@ -61,7 +62,7 @@ def generate_sankeys():
             return color_palette[index % len(color_palette)]
 
         # Create node colors
-        node_colors = [get_color(i) for i in nodes]
+        node_colors = [get_color(i) for i in range(len(nodes))]
 
         # Initialize lists for Sankey diagram
         sources = []
@@ -70,19 +71,19 @@ def generate_sankeys():
         link_colors = []
 
         # Generate links between consecutive columns
-        for i in range(len(df.columns) - 1):
-            if i == len(df.columns) - 2:  # Last pair of columns
-                source_col = df.columns[i]
-                target_col = df.columns[i + 1]
-            else:
-                source_col = df.columns[i]
-                target_col = df.columns[i + 1]
+        columns = [col for col in df.columns if col != value_col]
+        for i in range(len(columns) - 1):
+            source_col = columns[i]
+            target_col = columns[i + 1]
 
             # Add source-target pairs
-            sources.extend(list(nodes.loc[df[source_col]]))
-            targets.extend(list(nodes.loc[df[target_col]]))
-            values.extend(list(df["value"]))
-            link_colors.extend([get_color(i) for i in nodes.loc[df[target_col]]])
+            source_indices = [nodes[val] for val in df[source_col]]
+            target_indices = [nodes[val] for val in df[target_col]]
+            
+            sources.extend(source_indices)
+            targets.extend(target_indices)
+            values.extend(df[value_col])
+            link_colors.extend([get_color(idx) for idx in target_indices])
 
         fig = go.Figure(
             go.Sankey(
