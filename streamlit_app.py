@@ -54,6 +54,7 @@ def generate_sankeys():
         nodes = pd.Series(index=nodes, data=range(len(nodes)))
         # rename the first column "source and the last target"
         df = df.rename(columns={df.columns[0]: "source", df.columns[1]: "mid_target", df.columns[-1]: "end_target"})
+        print(df.head(2))
         # add a column "value" with value 1
         df["value"] = 1
         # Create color list once for reuse
