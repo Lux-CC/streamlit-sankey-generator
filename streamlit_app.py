@@ -21,10 +21,12 @@ def display_sidebar_ui():
         values = st.slider(
             "Text Opacity", 0, 100, 100, key="opacity"
         )
+        qualitative_color_scales = [scale for scale in dir(px.colors.qualitative) if not scale.startswith("__")]
+
         values = st.selectbox(
             "Select a colorscale",
             # get list of px.colors.qualitative colors
-            px.colors.qualitative.keys(),
+            qualitative_color_scales,
             key="colorscale",
         )
 
