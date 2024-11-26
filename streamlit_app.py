@@ -17,7 +17,7 @@ def display_sidebar_ui():
         st.title("Configuration")
         # Get HEX color
         st.session_state.font_color = st.color_picker(
-            "Font color", on_change=generate_sankeys, value='#ffffff00'
+            "Font color", on_change=generate_sankeys, value='#ffffff'
         )
         # # Convert selected labels back to their URLs
 
