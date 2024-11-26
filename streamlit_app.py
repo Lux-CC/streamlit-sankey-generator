@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import logging
 import plotly.graph_objects as go
+import plotly.express as px
 import textwrap
 
 logger = logging.getLogger(__name__)
@@ -55,6 +56,7 @@ def generate_sankeys():
         all_values = [item for sublist in unique_cols for item in sublist]
 
         node_labels = list(pd.unique(all_values))
+        nodes = pd.Series(index=node_labels, data=range(len(node_labels)))
 
         label_to_index = {label: i for i, label in enumerate(node_labels)}
 
@@ -74,12 +76,24 @@ def generate_sankeys():
         sankey_data = {
             # wrap lines each 40 characters and 80 and 120 etc. (insert \n)
             "node": {
-                "label": [textwrap.fill(label, width=40).replace('\n', '<br>') for label in node_labels],
+                "label": [
+                    textwrap.fill(label, width=40).replace("\n", "<br>")
+                    for label in node_labels
+                ],
+                "color": [
+                    px.colors.qualitative.Plotly[i % len(px.colors.qualitative.Plotly)]
+                    for i in nodes
+                ],
             },
             "link": {
                 "source": [link["source"] for link in links],
                 "target": [link["target"] for link in links],
                 "value": [link["value"] for link in links],
+                # set to he color of the target node color
+                "color": [
+                    px.colors.qualitative.Plotly[i % len(px.colors.qualitative.Plotly)]
+                    for i in nodes.loc[df["source"]]
+                ],
             },
         }
 
