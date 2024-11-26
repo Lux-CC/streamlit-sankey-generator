@@ -4,7 +4,6 @@ import logging
 import plotly.graph_objects as go
 import plotly.express as px
 import numpy as np
-import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.sankey import Sankey
 
@@ -15,6 +14,8 @@ logger = logging.getLogger(__name__)
 def display_sidebar_ui():
     with st.sidebar:
         st.title("Configuration")
+        # checkbox if the CSV contain column names in the first row or not
+        values = st.checkbox("CSV contains column names", value=True, key="csv_has_header")
         values = st.slider(
             "Text Size", 0, 100, 10, key="font_size"
         )
@@ -120,6 +121,8 @@ def main():
     st.title("Generate sankey for Milou!")
     if not "sankey_data" in st.session_state:
         st.session_state.sankey_data = []
+    if not "csv_has_header" in st.session_state:
+        st.session_state.csv_has_header = True
     if not "color_scale" in st.session_state:
         st.session_state.color_scale = "Plotly"
 
@@ -130,7 +133,7 @@ def main():
         st.session_state.sankey_data = []
         for file_uploaded in files_uploaded:
             # read csv, strings are quotes with "" and columns are comma separated. Ignore extra whitespaces on both ends.
-            df = pd.read_csv(file_uploaded, quotechar='"', skipinitialspace=True)
+            df = pd.read_csv(file_uploaded, quotechar='"', skipinitialspace=True, header=1 if st.session_state.csv_has_header else 0)
             # clear empty rows
             df = df.dropna(how="any", axis=0)
             # show last 3 rows
