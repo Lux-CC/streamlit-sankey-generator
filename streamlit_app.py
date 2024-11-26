@@ -102,8 +102,10 @@ def main():
     """
     st.set_page_config(page_title="Generate sankey for Milou!")
     st.title("Generate sankey for Milou!")
-    st.session_state.sankey_data = []
-    st.session_state.color_scale = "Plotly"
+    if not st.session_state.sankey_data:
+        st.session_state.sankey_data = []
+    if not st.session_state.color_scale:
+        st.session_state.color_scale = "Plotly"
 
     files_uploaded = st.file_uploader(
         "Upload csv", type=["csv"], accept_multiple_files=True
