@@ -4,3 +4,4 @@ numpy
 streamlit-plotly-events
 regex
 matplotlib
+pysankey

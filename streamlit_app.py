@@ -6,6 +6,8 @@ import plotly.express as px
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.sankey import Sankey
+from pysankey import sankey
+
 
 
 logger = logging.getLogger(__name__)
@@ -99,29 +101,11 @@ def generate_sankeys():
         st.plotly_chart(fig, use_container_width=True)
 
         # now also create a matplotlib sankey diagram fig
-        fig = create_sankey()
+        fig = sankey(
+            left=df['source'], right=df['target'], rightWeight=df['value'], aspect=20,
+            fontsize=20, figureName="customer-good"
+        )
         st.pyplot(fig)
-
-
-# Define a function to create the Sankey diagram
-def create_sankey():
-    sankey = Sankey(unit=None)  # Disable unit display
-
-    # Define the flows: positive values are inputs, negative are outputs
-    # For simplicity, we'll aggregate flows by source
-    flows = [80, 60, 50, -50, -30, -40, -60, -20, -30]  # Example flows
-    labels = ['Total Sources', 'Coal', 'Natural Gas', 'Nuclear',
-              'Residential', 'Commercial', 'Industrial', '', '']
-    orientations = [0, 1, 1, 1, 0, 0, 0, 0, 0]
-
-    sankey.add(flows=flows, labels=labels, orientations=orientations, facecolor='blue')
-    diagrams = sankey.finish()
-
-    fig, _ = plt.subplots(figsize=(10, 7))
-    plt.tight_layout()
-    return fig
-                
-
 
 
 
