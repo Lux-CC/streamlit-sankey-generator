@@ -71,7 +71,7 @@ def generate_sankeys():
                 link={
                     "source": nodes.loc[df["source"]],
                     "target": nodes.loc[df["target"]],
-                    "value": df["value"],
+                    "value": 1,
                     "color": [
                         px.colors.qualitative.Plotly[
                             i % len(px.colors.qualitative.Plotly)
