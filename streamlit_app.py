@@ -117,7 +117,7 @@ def create_sankey():
     sankey.add(flows=flows, labels=labels, orientations=orientations, facecolor='blue')
     diagrams = sankey.finish()
 
-    fig = plt.subplots(figsize=(10, 7))
+    fig, _ = plt.subplots(figsize=(10, 7))
     plt.tight_layout()
     return fig
                 
