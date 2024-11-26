@@ -129,7 +129,9 @@ def main():
     if files_uploaded is not None:
         st.session_state.sankey_data = []
         for file_uploaded in files_uploaded:
-            df = pd.read_csv(file_uploaded)
+            # read csv, strings are quotes with "" and columns are comma separated. Ignore extra whitespaces on both ends.
+            # also, ignore empty lines
+            df = pd.read_csv(file_uploaded, quotechar='"', skipinitialspace=True, skip_blank_lines=True)
             # clear empty rows
             df = df.dropna(how="all")
             
