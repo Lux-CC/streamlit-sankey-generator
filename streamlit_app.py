@@ -122,6 +122,7 @@ def generate_sankeys():
 
         fig.update_layout(
             title_text="Sankey Diagram",
+            height=800,
         )
         st.plotly_chart(fig, use_container_width=True, key=item["index"])
         
