@@ -59,7 +59,7 @@ def generate_sankeys():
         df = df.rename(columns={df.columns[0]: "source", df.columns[-1]: "target"})
         # add a column "value" with value 1
         df["value"] = 1
-        
+
         fig = go.Figure(
             go.Sankey(
                 node={
@@ -82,25 +82,6 @@ def generate_sankeys():
                         for i in nodes.loc[df["source"]]
                     ],
                 },
-            )
-        )
-
-        # Create the Sankey diagram
-        fig = go.Figure(
-            go.Sankey(
-                node=dict(
-                    pad=st.session_state.sankey_pad,
-                    thickness=st.session_state.sankey_thickness,
-                    # line=dict(color="black", width=st.session_state.line_width),
-                    label=sankey_data["node"]["label"],
-                    # color=st.session_state.node_color,
-                ),
-                link=dict(
-                    source=sankey_data["link"]["source"],
-                    target=sankey_data["link"]["target"],
-                    value=sankey_data["link"]["value"],
-                    # color=st.session_state.link_color,
-                ),
             )
         )
         st.session_state.fig = fig
