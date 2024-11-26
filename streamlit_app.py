@@ -44,7 +44,6 @@ def display_sidebar_ui():
 
 
 def generate_sankeys():
-    # check if st.session_state.sankey_data is set
     if "sankey_data" not in st.session_state:
         return
 
@@ -52,12 +51,11 @@ def generate_sankeys():
         # Prepare unique values and mapping
         nodes = np.unique(df, axis=None)
         nodes = pd.Series(index=nodes, data=range(len(nodes)))
-        # rename the first column "source and the last target"
-        df = df.rename(columns={df.columns[0]: "source", df.columns[1]: "mid_target", df.columns[-1]: "end_target"})
-        print(df.head(2))
+
         # add a column "value" with value 1
         df["value"] = 1
-        # Create color list once for reuse
+
+        # Create color generator function
         color_palette = getattr(px.colors.qualitative, st.session_state.color_scale)
         def get_color(index):
             return color_palette[index % len(color_palette)]
@@ -65,11 +63,26 @@ def generate_sankeys():
         # Create node colors
         node_colors = [get_color(i) for i in nodes]
 
-        # Combine source-to-mid and mid-to-end links
-        sources = list(nodes.loc[df["source"]]) + list(nodes.loc[df["mid_target"]])
-        targets = list(nodes.loc[df["mid_target"]]) + list(nodes.loc[df["end_target"]])
-        values = list(df["value"]) + list(df["value"])
-        link_colors = [get_color(i) for i in nodes.loc[df["mid_target"]]] + [get_color(i) for i in nodes.loc[df["end_target"]]]
+        # Initialize lists for Sankey diagram
+        sources = []
+        targets = []
+        values = []
+        link_colors = []
+
+        # Generate links between consecutive columns
+        for i in range(len(df.columns) - 1):
+            if i == len(df.columns) - 2:  # Last pair of columns
+                source_col = df.columns[i]
+                target_col = df.columns[i + 1]
+            else:
+                source_col = df.columns[i]
+                target_col = df.columns[i + 1]
+
+            # Add source-target pairs
+            sources.extend(list(nodes.loc[df[source_col]]))
+            targets.extend(list(nodes.loc[df[target_col]]))
+            values.extend(list(df["value"]))
+            link_colors.extend([get_color(i) for i in nodes.loc[df[target_col]]])
 
         fig = go.Figure(
             go.Sankey(
@@ -92,18 +105,12 @@ def generate_sankeys():
             )
         )
 
-        
         fig.update_layout(
             title_text="Sankey Diagram",
         )
 
         st.session_state.fig = fig
-
-        # Update layout and show figure
         
-
-            
-
 
 def main():
     """
