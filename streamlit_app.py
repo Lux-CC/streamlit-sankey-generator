@@ -102,9 +102,9 @@ def main():
     """
     st.set_page_config(page_title="Generate sankey for Milou!")
     st.title("Generate sankey for Milou!")
-    if not st.session_state.sankey_data:
+    if not "sankey_data" in st.session_state:
         st.session_state.sankey_data = []
-    if not st.session_state.color_scale:
+    if not "color_scale" in st.session_state:
         st.session_state.color_scale = "Plotly"
 
     files_uploaded = st.file_uploader(
