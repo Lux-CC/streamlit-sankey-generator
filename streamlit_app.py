@@ -15,37 +15,33 @@ logger = logging.getLogger(__name__)
 def display_sidebar_ui():
     with st.sidebar:
         st.title("Configuration")
-        st.session_state.font_size = st.slider(
-            "Text Opacity", 0, 100, 10, on_change=generate_sankeys
+        values = st.slider(
+            "Text Opacity", 0, 100, 10, key="font_size"
         )
-        st.session_state.opacity = st.slider(
-            "Text Opacity", 0, 100, 100, on_change=generate_sankeys
+        values = st.slider(
+            "Text Opacity", 0, 100, 100, key="opacity"
         )
-        # # Convert selected labels back to their URLs
 
         # Get input for graph title
-        st.session_state.graph_title = st.text_input(
-            "Enter graph title", value="Graph Title", on_change=generate_sankeys
+        values = st.text_input(
+            "Enter graph title", value="Graph Title", key="graph_title"
         )
 
         # Get input for graph subtitle
-        st.session_state.graph_subtitle = st.text_input(
-            "Enter graph subtitle", value="Graph Subtitle", on_change=generate_sankeys
+        values = st.text_input(
+            "Enter graph subtitle", value="Graph Subtitle", key="graph_subtitle"
         )
 
         # get input sliders for sankey pad and thickness
-        st.session_state.sankey_pad = st.slider(
-            "Sankey pad", 0, 100, 15, on_change=generate_sankeys
+        values = st.slider(
+            "Sankey pad", 0, 100, 15, key="sankey_pad"
         )
-        st.session_state.sankey_thickness = st.slider(
-            "Sankey thickness", 0, 100, 20, on_change=generate_sankeys
+        values = st.slider(
+            "Sankey thickness", 0, 100, 20, key="sankey_thickness"
         )
-        st.session_state.line_width = st.slider(
-            "Line width", 0.0, 5.5, 0.5, step=0.1, on_change=generate_sankeys
+        values = st.slider(
+            "Line width", 0.0, 5.5, 0.5, step=0.1, key="line_width"
         )
-        # st.session_state.font_size = st.slider(
-        #     "Font size", 0, 20, 10, step=1, on_change=generate_sankeys
-        # )
 
 
 def generate_sankeys():
@@ -125,8 +121,7 @@ def main():
 
     if st.session_state.sankey_data:
         # show button to generate sankey
-        if st.button("Generate sankey"):
-            generate_sankeys()
+        generate_sankeys()
 
     display_sidebar_ui()
 
