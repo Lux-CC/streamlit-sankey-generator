@@ -15,9 +15,8 @@ logger = logging.getLogger(__name__)
 def display_sidebar_ui():
     with st.sidebar:
         st.title("Configuration")
-        # Get HEX color
-        st.session_state.font_color = st.color_picker(
-            "Font color", on_change=generate_sankeys, value='#ffffff'
+        st.session_state.opacity = st.slider(
+            "Text Opacity", 0, 100, 100, on_change=generate_sankeys
         )
         # # Convert selected labels back to their URLs
 
@@ -62,7 +61,7 @@ def generate_sankeys():
 
         fig = go.Figure(
             go.Sankey(
-                textcolor=dict(color=st.session_state.font_color, size=1),
+                textcolor=dict(color=f"rgb(0,0,0,{st.session_state.opacity})", size=1),
                 node={
                     "label": nodes.index,
                     "color": [
