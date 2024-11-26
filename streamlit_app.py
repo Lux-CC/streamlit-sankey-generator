@@ -111,7 +111,7 @@ def generate_sankeys():
                     "target": targets,
                     "value": values,
                     "color": link_colors,
-                    "arrowlen": 15 if st.session_state.use_arrow else 0,
+                    "arrowlen": 15 if st.session_state.use_arrows else 0,
                 }
             )
         )
