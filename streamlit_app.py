@@ -48,9 +48,10 @@ def generate_sankeys():
     if "sankey_data" not in st.session_state:
         return
 
-    for df in st.session_state.sankey_data:
+    for item in st.session_state.sankey_data:
         # Prepare unique values and mapping (excluding the 'value' column)
         value_col = "value"
+        df = item["df"]
         df[value_col] = 1
         
         # Get all unique nodes excluding the value column
@@ -110,7 +111,7 @@ def generate_sankeys():
         fig.update_layout(
             title_text="Sankey Diagram",
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key=item["index"])
         
 
 def main():
@@ -139,7 +140,7 @@ def main():
 
             st.success(f"Found columns: {[col for col in df.columns]}")
             # Initialize empty dataframe to store all news
-            st.session_state.sankey_data.append(df)
+            st.session_state.sankey_data.append({"index": file_uploaded.file_id, "df": df})
 
         # show button to generate sankey
         generate_sankeys()
