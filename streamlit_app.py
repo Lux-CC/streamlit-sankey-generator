@@ -70,6 +70,8 @@ def generate_sankeys():
                         ]
                         for i in nodes
                     ],
+                    "pad": st.session_state.sankey_pad,  # 15 pixels
+                    "thickness": st.session_state.sankey_thickness,  # 20 pixels
                 },
                 link={
                     "source": nodes.loc[df["source"]],
