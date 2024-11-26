@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 import numpy as np
 import textwrap
+import holoviews as hv
 
 logger = logging.getLogger(__name__)
 
@@ -96,6 +97,18 @@ def generate_sankeys():
         )
         # output the figure to streamlit
         st.plotly_chart(fig, use_container_width=True)
+
+        # now also create a holoviews fig
+        nice_plot = hv.Sankey(
+            df,
+            label_position="left",
+            width=1000,
+            height=800,
+            edge_line_width=st.session_state.line_width,
+        )
+
+        st.st.bokeh_chart(hv.render(nice_plot, backend='bokeh'))
+
 
 
 def main():
