@@ -23,7 +23,8 @@ def display_sidebar_ui():
         )
         values = st.selectbox(
             "Select a colorscale",
-            px.colors.named_colorscales(),
+            # get list of px.colors.qualitative colors
+            px.colors.qualitative.keys(),
             key="colorscale",
         )
 
