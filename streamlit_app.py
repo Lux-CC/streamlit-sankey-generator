@@ -31,7 +31,7 @@ def display_sidebar_ui():
             "Width", 100, 1000, 1000, key="width"
         )
         values = st.slider(
-            "Scale", 0.1, 10.5, 1.0, step=0.1, key="scale"
+            "Scale", 0.1, 10.5, 1.0, step=0.1, key="plot_scale"
         )
 
         qualitative_color_scales = [scale for scale in dir(px.colors.qualitative) if not scale.startswith("__")]
@@ -90,7 +90,7 @@ def generate_sankeys():
         targets = []
         values = []
         link_colors = []
-        scale = st.session_state.scale
+        scale = st.session_state.plot_scale
         # Generate links between consecutive columns
         columns = [col for col in df.columns if col != value_col]
         for i in range(len(columns) - 1):
@@ -159,7 +159,7 @@ def main():
         st.session_state.use_arrows = True
         st.session_state.reverse_colors = False
         st.session_state.width = 500
-        st.session_state.scale = 1
+        st.session_state.plot_scale = 1
 
     files_uploaded = st.file_uploader(
         "Upload csv", type=["csv"], accept_multiple_files=True
