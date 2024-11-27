@@ -113,17 +113,17 @@ def generate_sankeys():
             go.Sankey(
                 textfont=dict(
                     color=f"rgba(0,0,0,{st.session_state.opacity})", 
-                    size=st.session_state.font_size
+                    size=st.session_state.font_size*scale
                 ),
                 node={
                     "label": nodes.index,
                     "color": node_colors,
-                    "pad": st.session_state.sankey_pad,
+                    "pad": st.session_state.sankey_pad*scale,
                     "line": {
                         "color": "black",
-                        "width": st.session_state.line_width,
+                        "width": st.session_state.line_width*scale,
                     },
-                    "thickness": st.session_state.sankey_thickness,
+                    "thickness": st.session_state.sankey_thickness*scale,
                 },
                 link={
                     "source": sources,
