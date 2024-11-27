@@ -27,6 +27,12 @@ def display_sidebar_ui():
         values = st.slider(
             "Connector Opacity", 0, 100, 100, key="link_opacity"
         )
+        values = st.slider(
+            "Width", 100, 1000, 1000, key="width"
+        )
+        values = st.slider(
+            "Scale", 0.1, 10, 1, step=0.1, key="scale"
+        )
 
         qualitative_color_scales = [scale for scale in dir(px.colors.qualitative) if not scale.startswith("__")]
 
@@ -84,7 +90,7 @@ def generate_sankeys():
         targets = []
         values = []
         link_colors = []
-
+        scale = st.session_state.scale
         # Generate links between consecutive columns
         columns = [col for col in df.columns if col != value_col]
         for i in range(len(columns) - 1):
@@ -124,14 +130,15 @@ def generate_sankeys():
                     "target": targets,
                     "value": values,
                     "color": link_colors,
-                    "arrowlen": 15 if st.session_state.use_arrows else 0,
+                    "arrowlen": 15*scale if st.session_state.use_arrows else 0,
                 }
             )
         )
 
         fig.update_layout(
             title_text="Sankey Diagram",
-            height=800,
+            height=800*scale,
+            width=st.session_state.width*scale,
         )
         st.plotly_chart(fig, use_container_width=True, key=item["index"])
         
@@ -151,6 +158,8 @@ def main():
         st.session_state.link_opacity = 100
         st.session_state.use_arrows = True
         st.session_state.reverse_colors = False
+        st.session_state.width = 500
+        st.session_state.scale = 1
 
     files_uploaded = st.file_uploader(
         "Upload csv", type=["csv"], accept_multiple_files=True
