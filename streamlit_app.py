@@ -31,7 +31,7 @@ def display_sidebar_ui():
             "Width", 100, 1000, 1000, key="width"
         )
         values = st.slider(
-            "Scale", 0.1, 10.5, 1, step=0.1, key="scale"
+            "Scale", 0.1, 10.5, 1.0, step=0.1, key="scale"
         )
 
         qualitative_color_scales = [scale for scale in dir(px.colors.qualitative) if not scale.startswith("__")]
