@@ -140,7 +140,7 @@ def generate_sankeys():
             height=800*scale,
             width=st.session_state.width*scale,
         )
-        st.plotly_chart(fig, use_container_width=True, key=item["index"])
+        st.plotly_chart(fig, use_container_width=False, key=item["index"])
         
 
 def main():
