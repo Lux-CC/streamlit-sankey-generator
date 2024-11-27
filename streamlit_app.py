@@ -16,7 +16,8 @@ def display_sidebar_ui():
         st.title("Configuration")
         # checkbox if the CSV contain column names in the first row or not
         values = st.checkbox("CSV contains column names", value=True, key="csv_has_header")
-        values = st.checkbox("use arrows in plot", value=True, key="use_arrows")
+        values = st.checkbox("Use arrows in plot", value=True, key="use_arrows")
+        values = st.checkbox("Reverse colors", value=False, key="reverse_colors")
         values = st.slider(
             "Text Size", 1, 100, 10, key="font_size"
         )
@@ -92,7 +93,10 @@ def generate_sankeys():
             sources.extend(source_indices)
             targets.extend(target_indices)
             values.extend(df[value_col])
-            link_colors.extend([get_color(idx) for idx in target_indices])
+            if st.session_state.reverse_colors:
+                link_colors.extend([get_color(idx) for idx in source_indices])
+            else:
+                link_colors.extend([get_color(idx) for idx in target_indices])
 
         fig = go.Figure(
             go.Sankey(
@@ -141,6 +145,7 @@ def main():
         st.session_state.color_scale = "Plotly"
         st.session_state.link_opacity = 100
         st.session_state.use_arrows = True
+        st.session_state.reverse_colors = False
 
     files_uploaded = st.file_uploader(
         "Upload csv", type=["csv"], accept_multiple_files=True
