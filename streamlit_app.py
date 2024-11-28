@@ -113,38 +113,38 @@ def generate_sankeys():
             go.Sankey(
                 textfont=dict(
                     color=f"rgba(0,0,0,{st.session_state.opacity})", 
-                    size=st.session_state.font_size*scale
+                    size=st.session_state.font_size
                 ),
                 node={
                     "label": nodes.index,
                     "color": node_colors,
-                    "pad": st.session_state.sankey_pad*scale,
+                    "pad": st.session_state.sankey_pad,
                     "line": {
                         "color": "black",
-                        "width": st.session_state.line_width*scale,
+                        "width": st.session_state.line_width,
                     },
-                    "thickness": st.session_state.sankey_thickness*scale,
+                    "thickness": st.session_state.sankey_thickness,
                 },
                 link={
                     "source": sources,
                     "target": targets,
                     "value": values,
                     "color": link_colors,
-                    "arrowlen": 15*scale if st.session_state.use_arrows else 0,
+                    "arrowlen": 15 if st.session_state.use_arrows else 0,
                 }
             )
         )
 
         fig.update_layout(
             title_text="Sankey Diagram",
-            height=800*scale,
-            width=st.session_state.width*scale,
+            height=800,
+            width=st.session_state.width,
         )
         st.plotly_chart(fig, use_container_width=False, key=item["index"])
         # give a download button that downloads the figure in higher resolution
         st.download_button(
             label="Download sankey as png",
-            data=fig.to_image(format="png", width=st.session_state.width*scale, height=800*scale, scale=10),
+            data=fig.to_image(format="png", width=st.session_state.width, height=800, scale=scale),
             file_name=f"sankey_{item['index']}.png",
             mime="image/png",
             key=f"download_{item['index']}"
