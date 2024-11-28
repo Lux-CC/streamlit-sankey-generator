@@ -15,26 +15,24 @@ def display_sidebar_ui():
     with st.sidebar:
         st.title("Configuration")
         # checkbox if the CSV contain column names in the first row or not
-        values = st.checkbox("CSV contains column names", value=True, key="csv_has_header")
+        values = st.checkbox(
+            "CSV contains column names", value=True, key="csv_has_header"
+        )
         values = st.checkbox("Use arrows in plot", value=True, key="use_arrows")
         values = st.checkbox("Reverse colors", value=False, key="reverse_colors")
-        values = st.slider(
-            "Text Size", 1, 100, 10, key="font_size"
-        )
-        values = st.slider(
-            "Text Opacity", 0, 100, 100, key="opacity"
-        )
-        values = st.slider(
-            "Connector Opacity", 0, 100, 100, key="link_opacity"
-        )
-        values = st.slider(
-            "Width", 100, 1000, 1000, key="width"
-        )
-        values = st.slider(
-            "Scale", 0.1, 10.5, 1.0, step=0.1, key="plot_scale"
-        )
+        values = st.slider("Text Size", 1, 100, 10, key="font_size")
+        values = st.slider("Text Opacity", 0, 100, 100, key="opacity")
+        values = st.slider("Connector Opacity", 0, 100, 100, key="link_opacity")
+        values = st.slider("Width", 100, 1000, 1000, key="width")
+        values = st.slider("Scale", 0.1, 10.5, 1.0, step=0.1, key="plot_scale")
 
-        qualitative_color_scales = [scale for scale in dir(px.colors.qualitative) if not scale.startswith("__")]
+        qualitative_color_scales = [
+            scale
+            for scale in dir(px.colors.qualitative)
+            if not scale.startswith("__")
+            and type(scale) == list
+            and scale[0].startswith("#")
+        ]
 
         values = st.selectbox(
             "Select a colorscale",
@@ -43,17 +41,10 @@ def display_sidebar_ui():
             key="color_scale",
         )
 
-
         # get input sliders for sankey pad and thickness
-        values = st.slider(
-            "Sankey pad", 0, 100, 15, key="sankey_pad"
-        )
-        values = st.slider(
-            "Sankey thickness", 1, 100, 20, key="sankey_thickness"
-        )
-        values = st.slider(
-            "Line width", 0.0, 5.5, 0.5, step=0.1, key="line_width"
-        )
+        values = st.slider("Sankey pad", 0, 100, 15, key="sankey_pad")
+        values = st.slider("Sankey thickness", 1, 100, 20, key="sankey_thickness")
+        values = st.slider("Line width", 0.0, 5.5, 0.5, step=0.1, key="line_width")
 
 
 def generate_sankeys():
@@ -65,13 +56,14 @@ def generate_sankeys():
         value_col = "value"
         df = item["df"]
         df[value_col] = 1
-        
+
         # Get all unique nodes excluding the value column
         nodes = np.unique(df.drop(columns=[value_col]).values, axis=None)
         nodes = pd.Series(index=nodes, data=range(len(nodes)))
 
         # Create color generator function
         color_palette = getattr(px.colors.qualitative, st.session_state.color_scale)
+
         def get_color(index):
             base_color = color_palette[index % len(color_palette)]
             # If the color is hex, convert, if it is rgb, convert that one
@@ -100,7 +92,7 @@ def generate_sankeys():
             # Add source-target pairs
             source_indices = [nodes[val] for val in df[source_col]]
             target_indices = [nodes[val] for val in df[target_col]]
-            
+
             sources.extend(source_indices)
             targets.extend(target_indices)
             values.extend(df[value_col])
@@ -112,8 +104,8 @@ def generate_sankeys():
         fig = go.Figure(
             go.Sankey(
                 textfont=dict(
-                    color=f"rgba(0,0,0,{st.session_state.opacity})", 
-                    size=st.session_state.font_size
+                    color=f"rgba(0,0,0,{st.session_state.opacity})",
+                    size=st.session_state.font_size,
                 ),
                 node={
                     "label": nodes.index,
@@ -131,7 +123,7 @@ def generate_sankeys():
                     "value": values,
                     "color": link_colors,
                     "arrowlen": 15 if st.session_state.use_arrows else 0,
-                }
+                },
             )
         )
 
@@ -144,12 +136,14 @@ def generate_sankeys():
         # give a download button that downloads the figure in higher resolution
         st.download_button(
             label="Download sankey as png",
-            data=fig.to_image(format="png", width=st.session_state.width, height=800, scale=scale),
+            data=fig.to_image(
+                format="png", width=st.session_state.width, height=800, scale=scale
+            ),
             file_name=f"sankey_{item['index']}.png",
             mime="image/png",
-            key=f"download_{item['index']}"
+            key=f"download_{item['index']}",
         )
-        
+
 
 def main():
     """
@@ -176,18 +170,26 @@ def main():
         st.session_state.sankey_data = []
         for file_uploaded in files_uploaded:
             # read csv, strings are quotes with "" and columns are comma separated. Ignore extra whitespaces on both ends.
-            df = pd.read_csv(file_uploaded, quotechar='"', skipinitialspace=True, header=1 if st.session_state.csv_has_header else 0)
+            df = pd.read_csv(
+                file_uploaded,
+                quotechar='"',
+                skipinitialspace=True,
+                header=1 if st.session_state.csv_has_header else 0,
+            )
             # clear empty rows
             df = df.dropna(how="any", axis=0)
 
             st.success(f"Found columns: {[col for col in df.columns]}")
             # Initialize empty dataframe to store all news
-            st.session_state.sankey_data.append({"index": file_uploaded.file_id, "df": df})
+            st.session_state.sankey_data.append(
+                {"index": file_uploaded.file_id, "df": df}
+            )
 
         # show button to generate sankey
         generate_sankeys()
 
     display_sidebar_ui()
+
 
 if __name__ == "__main__":
     main()
