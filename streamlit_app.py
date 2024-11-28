@@ -144,7 +144,7 @@ def generate_sankeys():
         # give a download button that downloads the figure in higher resolution
         st.download_button(
             label="Download sankey as png",
-            data=fig.to_image(format="png", width=st.session_state.width, height=800, scale=scale),
+            data=fig.to_image(format="png", width=st.session_state.width * scale, height=800 * scale, scale=scale),
             file_name=f"sankey_{item['index']}.png",
             mime="image/png",
             key=f"download_{item['index']}"
@@ -167,7 +167,7 @@ def main():
         st.session_state.use_arrows = True
         st.session_state.reverse_colors = False
         st.session_state.width = 500
-        st.session_state.plot_scale = 1
+        st.session_state.plot_scale = 10
 
     files_uploaded = st.file_uploader(
         "Upload csv", type=["csv"], accept_multiple_files=True
