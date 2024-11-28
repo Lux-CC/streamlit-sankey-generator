@@ -141,6 +141,14 @@ def generate_sankeys():
             width=st.session_state.width*scale,
         )
         st.plotly_chart(fig, use_container_width=False, key=item["index"])
+        # give a download button that downloads the figure in higher resolution
+        st.download_button(
+            label="Download sankey as png",
+            data=fig.to_image(format="png", width=st.session_state.width*scale, height=800*scale, scale=10),
+            file_name=f"sankey_{item['index']}.png",
+            mime="image/png",
+            key=f"download_{item['index']}"
+        )
         
 
 def main():
