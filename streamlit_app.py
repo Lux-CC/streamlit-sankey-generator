@@ -144,7 +144,7 @@ def generate_sankeys():
         # give a download button that downloads the figure in higher resolution
         st.download_button(
             label="Download sankey as png",
-            data=fig.to_image(format="png", width=st.session_state.width * scale, height=800 * scale),
+            data=fig.to_image(format="png", width=st.session_state.width, height=800, scale=scale),
             file_name=f"sankey_{item['index']}.png",
             mime="image/png",
             key=f"download_{item['index']}"
