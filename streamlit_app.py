@@ -31,7 +31,7 @@ def display_sidebar_ui():
             for scale in dir(px.colors.qualitative)
             if not scale.startswith("__")
             and type(getattr(px.colors.qualitative, scale)) == list
-            and scale[0].startswith("#")
+            and getattr(px.colors.qualitative, scale)[0].startswith("#")
         ]
 
         values = st.selectbox(
