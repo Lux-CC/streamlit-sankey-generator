@@ -30,7 +30,7 @@ def display_sidebar_ui():
             scale
             for scale in dir(px.colors.qualitative)
             if not scale.startswith("__")
-            and type(scale) == list
+            and type(getattr(px.colors.qualitative, scale)) == list
             and scale[0].startswith("#")
         ]
 
