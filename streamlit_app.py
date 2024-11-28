@@ -18,7 +18,7 @@ def display_sidebar_ui():
         values = st.checkbox(
             "CSV contains column names", value=True, key="csv_has_header"
         )
-        values = st.checkbox("Use arrows in plot", value=True, key="use_arrows")
+        values = st.checkbox("Use arrows in plot", value=False, key="use_arrows")
         values = st.checkbox("Base colors on left-hand-side", value=False, key="reverse_colors")
         values = st.slider("Text Size", 1, 100, 10, key="font_size")
         values = st.slider("Text Opacity", 0, 100, 100, key="opacity")
