@@ -67,11 +67,8 @@ def generate_sankeys():
         def get_color(index):
             base_color = color_palette[index % len(color_palette)]
             # If the color is hex, convert, if it is rgb, convert that one
-            if base_color.startswith("#"):
-                base_color = base_color.lstrip("#")
-                base_color = f"rgba({int(base_color[:2], 16)}, {int(base_color[2:4], 16)}, {int(base_color[4:6], 16)}, {st.session_state.link_opacity / 100})"
-            else:
-                base_color = base_color.replace("rgb(", "").replace(")", "")
+            base_color = base_color.lstrip("#")
+            base_color = f"rgba({int(base_color[:2], 16)}, {int(base_color[2:4], 16)}, {int(base_color[4:6], 16)}, {st.session_state.link_opacity / 100})"
             return base_color
 
         # Create node colors
