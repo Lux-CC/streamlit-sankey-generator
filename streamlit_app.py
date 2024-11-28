@@ -167,7 +167,7 @@ def main():
         st.session_state.use_arrows = True
         st.session_state.reverse_colors = False
         st.session_state.width = 500
-        st.session_state.plot_scale = 10
+        st.session_state.plot_scale = 3
 
     files_uploaded = st.file_uploader(
         "Upload csv", type=["csv"], accept_multiple_files=True
